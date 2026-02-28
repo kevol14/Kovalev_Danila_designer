@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kovalev Danila — Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e0e;
+      --fg: #f0ede8;
+      --muted: #6e6b66;
+      --accent: #c8f060;
+      --accent2: #ff5c3a;
+      --border: rgba(240,237,232,0.1);
+      --card-bg: #161616;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor.hover {
+      width: 44px; height: 44px;
+      background: var(--fg);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 60px;
+      mix-blend-mode: difference;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--fg);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    /* Language toggle */
+    .lang-btn {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 12px;
+      cursor: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lang-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Two-column hero layout */
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 80px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.2s forwards;
+    }
+
+    /* LEFT COLUMN */
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .hero-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(42px, 6vw, 88px);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 300;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 480px;
+      margin-bottom: 28px;
+    }
+
+     .hero-cta {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      letter-spacing: 0.07em;
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+      cursor: none;
+    }
+    .hero-btn:hover { transform: translateY(-2px); }
+
+    .hero-btn-tg {
+      background: var(--accent);
+      color: #0e0e0e;
+      border: 1px solid var(--accent);
+      font-weight: 400;
+    }
+    .hero-btn-tg:hover { background: #d8f870; border-color: #d8f870; }
+
+    .hero-btn-hh {
+      background: transparent;
+      color: rgba(240,237,232,0.7);
+      border: 1px solid var(--border);
+    }
+    .hero-btn-hh:hover { border-color: rgba(240,237,232,0.4); color: var(--fg); }
+    .hero-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* RIGHT COLUMN — photo + buttons */
+    .hero-photo-wrap {
+      position: relative;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
+    }
+
+    /* Decorative arc ring like the reference */
+    .hero-photo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -16px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: var(--accent);
+      border-right-color: var(--accent);
+      animation: spinRing 8s linear infinite;
+    }
+    .hero-photo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -28px;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      border-bottom-color: rgba(200,240,96,0.3);
+      border-left-color: rgba(200,240,96,0.3);
+      animation: spinRing 14s linear infinite reverse;
+    }
+    @keyframes spinRing {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .hero-photo-inline {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid rgba(200,240,96,0.2);
+      box-shadow: 0 0 60px rgba(200,240,96,0.08), 0 20px 60px rgba(0,0,0,0.6);
+      position: relative;
+      z-index: 1;
+    }
+    .hero-photo-inline img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: grayscale(10%);
+    }
+
+    /* Status badge — bottom right */
+    .hero-status {
+      position: absolute;
+      bottom: 88px;
+      right: 60px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: rgba(14,14,14,0.5);
+      backdrop-filter: blur(8px);
+      z-index: 2;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.9s forwards;
+    }
+    .hero-status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74,222,128,0.2);
+      animation: statusPulse 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes statusPulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.2); }
+      50%       { box-shadow: 0 0 0 7px rgba(74,222,128,0.0); }
+    }
+    .hero-status-text {
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: rgba(240,237,232,0.7);
+    }
+
+    /* MARQUEE */
+    .hero-marquee {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 48px;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      z-index: 2;
+      background: rgba(14,14,14,0.35);
+      backdrop-filter: blur(4px);
+    }
+    .hero-marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marqueeScroll 30s linear infinite;
+      will-change: transform;
+    }
+    .hero-marquee-track:hover { animation-play-state: paused; }
+    @keyframes marqueeScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .hero-marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 32px;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-marquee-sep {
+      color: var(--accent);
+      font-size: 0.55rem;
+    }
+
+    @keyframes lineMove {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 56px;
+    }
+
+    .filter-btn {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      background: transparent;
+      cursor: none;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .filter-btn:hover {
+      border-color: var(--fg);
+      color: var(--fg);
+    }
+    .filter-btn.active {
+      border-color: var(--accent);
+      color: var(--bg);
+      background: var(--accent);
+    }
+
+    .filter-reset {
+      padding: 8px 18px;
+      border: 1px solid transparent;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      background: transparent;
+      cursor: none;
+      transition: color 0.2s;
+      font-family: 'DM Sans', sans-serif;
+      display: none;
+    }
+    .filter-reset.visible { display: inline-flex; align-items: center; gap: 6px; }
+    .filter-reset:hover { color: var(--accent2); }
+
+    /* PROJECT TAGS (bottom of card) */
+    .project-card-tags {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .project-card-tag {
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      background: rgba(14,14,14,0.75);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      color: rgba(240,237,232,0.6);
+      pointer-events: all;
+      cursor: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .project-card-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* hide/show filtered cards */
+    .project-card.hidden {
+      display: none;
+    }
+
+    /* ABOUT */
+    #about {
+      padding: 140px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .about-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .about-right p {
+      color: rgba(240,237,232,0.6);
+      font-size: 1.05rem;
+      margin-bottom: 24px;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 40px;
+    }
+
+    .skill-tag {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .skill-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* PORTFOLIO */
+    #portfolio {
+      padding: 140px 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .portfolio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 80px;
+    }
+
+    .portfolio-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--card-bg);
+      aspect-ratio: 4/3;
+      cursor: none;
+    }
+
+    .project-card:first-child {
+      grid-column: span 2;
+      aspect-ratio: 16/7;
+    }
+
+    .project-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+      filter: grayscale(20%);
+    }
+
+    .project-card:hover .project-img {
+      transform: scale(1.05);
+      filter: grayscale(0%);
+    }
+
+    /* Placeholder when no image */
+    .project-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a1a1a 0%, #222 50%, #1a1a1a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(40px, 8vw, 100px);
+      font-weight: 800;
+      color: rgba(255,255,255,0.04);
+      letter-spacing: -0.05em;
+      transition: transform 0.7s ease;
+    }
+    .project-card:hover .project-placeholder {
+      transform: scale(1.03);
+    }
+
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14,14,14,0.95) 0%, rgba(14,14,14,0.2) 60%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 36px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .project-card:hover .project-overlay { opacity: 1; }
+
+    .project-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      color: rgba(240,237,232,0.6);
+      margin-bottom: 20px;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 100px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .project-link.behance {
+      background: var(--accent);
+      color: #0e0e0e;
+      font-weight: 400;
+    }
+    .project-link.behance:hover { background: #d4f470; }
+
+    .project-link.site {
+      border: 1px solid rgba(240,237,232,0.3);
+      color: var(--fg);
+    }
+    .project-link.site:hover { border-color: var(--fg); }
+
+    .project-link svg {
+      width: 12px; height: 12px;
+    }
+
+    /* always-visible project info below card on mobile / as tag */
+    .project-tag {
+      position: absolute;
+      top: 24px; left: 24px;
+      background: rgba(14,14,14,0.7);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* CONTACT */
+    #contact {
+      padding: 140px 60px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .contact-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(42px, 6vw, 90px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+
+    .contact-title span {
+      color: var(--accent);
+      font-style: italic;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+    }
+
+    .contact-right p {
+      color: rgba(240,237,232,0.55);
+      margin-bottom: 48px;
+      font-size: 1rem;
+      max-width: 340px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 28px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--fg);
+      transition: border-color 0.25s, background 0.25s;
+      group: '';
+    }
+    .contact-link:hover {
+      border-color: var(--accent);
+      background: rgba(200,240,96,0.04);
+    }
+
+    .contact-link-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .contact-link-handle {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .contact-link-arrow {
+      font-size: 1.2rem;
+      color: var(--accent);
+      transition: transform 0.2s;
+    }
+    .contact-link:hover .contact-link-arrow { transform: translate(4px, -4px); }
+
+    /* FOOTER */
+    footer {
+      padding: 40px 60px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* More projects button */
+    .more-projects-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      cursor: none;
+    }
+    .more-projects-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 24px 24px; }
+      .nav-links { gap: 24px; }
+      #hero { padding: 100px 24px 80px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-photo-wrap { display: flex; justify-content: center; order: -1; align-items: center; }
+      .hero-photo-inline { width: 200px; height: 200px; }
+      /* Disable decorative rings on mobile — they overflow incorrectly */
+      .hero-photo-wrap::before,
+      .hero-photo-wrap::after { display: none; }
+      #contact { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
+      #portfolio { padding: 80px 24px; }
+      .project-grid { grid-template-columns: 1fr; }
+      .project-card:first-child { grid-column: span 1; aspect-ratio: 4/3; }
+      .portfolio-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <a href="#hero" class="nav-logo">KD</a>
+      <button class="lang-btn" id="langBtn">EN</button>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero" data-i18n="nav-about">Обо мне</a></li>
+      <li><a href="#portfolio" data-i18n="nav-work">Работы</a></li>
+      <li><a href="#contact" data-i18n="nav-contact">Контакты</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+
+    <div class="hero-inner">
+      <!-- LEFT: name → about → skills -->
+      <div class="hero-left">
+        <h1 class="hero-title">Kovalev<br><em>Danila</em></h1>
+        <p class="hero-desc" data-i18n="hero-desc">Креативный дизайнер, специализируюсь на визуальной коммуникации и брендинге. <br> Создаю цельные визуальные системы — от айдентики и рекламных материалов до дизайна мерча. За плечами более 10 реализованных проектов в разных сферах; ценю ясность, смысл и выразительность в каждом решении.</p>
+      <div class="hero-cta">
+          <a href="https://t.me/kevol14" target="_blank" class="hero-btn hero-btn-tg">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.16 13.947l-2.965-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.993.612z"/></svg>
+            Telegram
+          </a>
+          <a href="https://novosibirsk.hh.ru/resume/c08ab4aeff1022b9320039ed1f627374316d4d" target="_blank" class="hero-btn hero-btn-hh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            HeadHunter
+          </a>
+        </div>
+      </div>
+
+      <!-- RIGHT: photo + buttons below -->
+      <div class="hero-photo-wrap">
+        <div class="hero-photo-inline">
+          <img src="Kovalev.jpg" alt="Kovalev Danila">
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Marquee -->
+    <div class="hero-marquee">
+      <div class="hero-marquee-track">
+        <span class="hero-marquee-item">Brand Identity <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">UI / UX Design <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Web Design <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Figma <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Typography <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Motion <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Art Direction <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Illustration <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Brand Identity <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">UI / UX Design <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Web Design <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Figma <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Typography <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Motion <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Art Direction <span class="hero-marquee-sep">✦</span></span>
+        <span class="hero-marquee-item">Illustration <span class="hero-marquee-sep">✦</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="portfolio-header reveal">
+      <div>
+        <div class="section-label" data-i18n="portfolio-label">Избранные работы</div>
+        <h2 class="portfolio-title" data-i18n="portfolio-title">Проекты</h2>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-filter="all" data-i18n="filter-all">Все</button>
+      <button class="filter-btn" data-filter="Brand Identity">Brand Identity</button>
+      <button class="filter-btn" data-filter="UI / UX">UI / UX</button>
+      <button class="filter-btn" data-filter="Web Design">Web Design</button>
+      <button class="filter-btn" data-filter="Typography">Typography</button>
+      <button class="filter-btn" data-filter="Motion">Motion</button>
+      <button class="filter-btn" data-filter="Figma">Figma</button>
+      <button class="filter-btn" data-filter="Illustration">Illustration</button>
+      <button class="filter-btn" data-filter="Art Direction">Art Direction</button>
+      <button class="filter-reset" id="filterReset" data-i18n="filter-reset">✕ Сброс</button>
+    </div>
+
+    <div class="project-grid" id="projectGrid">
+
+            <!-- Project 4 – Кубок Сибири -->
+      <div class="project-card reveal" data-tags="Art Direction,Brand Identity">
+        <img class="project-img" src="p4.png" alt="Кубок Сибири">
+        <span class="project-tag">Art Direction</span>
+        <div class="project-overlay">
+          <div class="project-name">Кубок Сибири</div>
+          <div class="project-desc">Визуальное оформление чемпионата СФО по спортивному туризму на лыжных дистанциях.</div>
+          <div class="project-links">
+            <a href="https://www.behance.net/gallery/244328355/ajdentika-sorevnovanij-kubok-sibiri-omskaja-oblast" target="_blank" class="project-link behance">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.902 2.111 1.902.914 0 1.419-.468 1.644-1.073zM16.098 13h4.214c-.088-1.174-.56-1.99-1.967-1.99-1.3 0-2.04.814-2.247 1.99z"/></svg>
+              Behance
+            </a>
+            <a href="#" target="_blank" class="project-link site">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Live site
+            </a>
+          </div>
+        </div>
+        <div class="project-card-tags">
+          <span class="project-card-tag">Art Direction</span>
+          <span class="project-card-tag">Brand Identity</span>
+        </div>
+      </div>
+
+      <!-- Project 6 – Dough & Dao -->
+      <div class="project-card reveal" data-tags="Brand Identity,Illustration">
+        <img class="project-img" src="p6.png" alt="Dough & Dao">
+        <span class="project-tag">Brand Identity</span>
+        <div class="project-overlay">
+          <div class="project-name">Dough & Dao</div>
+          <div class="project-desc">Фирменный знак и айдентика для азиатской пекарни — баланс восточной философии и современной типографики.</div>
+          <div class="project-links">
+            <a href="https://www.behance.net/gallery/234310519/Branding-Dough-Dao" target="_blank" class="project-link behance">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.902 2.111 1.902.914 0 1.419-.468 1.644-1.073zM16.098 13h4.214c-.088-1.174-.56-1.99-1.967-1.99-1.3 0-2.04.814-2.247 1.99z"/></svg>
+              Behance
+            </a>
+            <a href="#" target="_blank" class="project-link site">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Live site
+            </a>
+          </div>
+        </div>
+        <div class="project-card-tags">
+          <span class="project-card-tag">Brand Identity</span>
+          <span class="project-card-tag">Illustration</span>
+        </div>
+      </div>
+
+      <!-- Project 7 – Авангард -->
+      <div class="project-card reveal" data-tags="Brand Identity,Art Direction,Typography">
+        <img class="project-img" src="p7.jpg" alt="Авангард AVG 2025">
+        <span class="project-tag">Brand Identity</span>
+        <div class="project-overlay">
+          <div class="project-name">Авангард AVG 2025</div>
+          <div class="project-desc">Визуальная концепция новой коллекции мерча для хоккейного клуба Авангард — командный вайб на каждый день.</div>
+          <div class="project-links">
+            <a href="https://www.behance.net/gallery/244922343/Merch-for-hockey-club-Avangard" target="_blank" class="project-link behance">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.902 2.111 1.902.914 0 1.419-.468 1.644-1.073zM16.098 13h4.214c-.088-1.174-.56-1.99-1.967-1.99-1.3 0-2.04.814-2.247 1.99z"/></svg>
+              Behance
+            </a>
+            <a href="#" target="_blank" class="project-link site">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Live site
+            </a>
+          </div>
+        </div>
+        <div class="project-card-tags">
+          <span class="project-card-tag">Brand Identity</span>
+          <span class="project-card-tag">Art Direction</span>
+        </div>
+      </div>
+
+
+      <!-- Project 3 – Айдентика презентаций -->
+      <div class="project-card reveal" data-tags="Brand Identity,Typography,Art Direction">
+        <img class="project-img" src="p3.png" alt="Айдентика презентаций">
+        <span class="project-tag">Brand Identity</span>
+        <div class="project-overlay">
+          <div class="project-name">Айдентика презентаций</div>
+          <div class="project-desc">Разработка визуального стиля для серии образовательных презентаций — типографика, цвет, сетка.</div>
+          <div class="project-links">
+            <a href="https://www.behance.net/gallery/234976827/Identity-and-style-of-presentations" target="_blank" class="project-link behance">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.902 2.111 1.902.914 0 1.419-.468 1.644-1.073zM16.098 13h4.214c-.088-1.174-.56-1.99-1.967-1.99-1.3 0-2.04.814-2.247 1.99z"/></svg>
+              Behance
+            </a>
+            <a href="#" target="_blank" class="project-link site">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Live site
+            </a>
+          </div>
+        </div>
+        <div class="project-card-tags">
+          <span class="project-card-tag">Brand Identity</span>
+          <span class="project-card-tag">Typography</span>
+        </div>
+      </div>
+
+      <!-- Project 1 – Health Center (featured, wide) -->
+      <div class="project-card reveal" data-tags="Web Design,UI / UX,Figma">
+        <img class="project-img" src="p1.jpg" alt="Health Center">
+        <span class="project-tag">Web Design</span>
+        <div class="project-overlay">
+          <div class="project-name">Health Center</div>
+          <div class="project-desc">Веб-сайт для сети клиник, помогающих людям, столкнувшимся с алкоголизмом или наркоманией.</div>
+          <div class="project-links">
+            <a href="https://www.behance.net/gallery/234828137/Clinic-website" target="_blank" class="project-link behance">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.902 2.111 1.902.914 0 1.419-.468 1.644-1.073zM16.098 13h4.214c-.088-1.174-.56-1.99-1.967-1.99-1.3 0-2.04.814-2.247 1.99z"/></svg>
+              Behance
+            </a>
+            <a href="#" target="_blank" class="project-link site">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Live site
+            </a>
+          </div>
+        </div>
+        <div class="project-card-tags">
+          <span class="project-card-tag">Web Design</span>
+          <span class="project-card-tag">UI / UX</span>
+          <span class="project-card-tag">Figma</span>
+        </div>
+      </div>
+
+      <!-- Project 2 – New Testament -->
+      <div class="project-card reveal" data-tags="Web Design,UI / UX,Art Direction">
+        <img class="project-img" src="p2.png" alt="New Testament — Alien Collection">
+        <span class="project-tag">Web Design</span>
+        <div class="project-overlay">
+          <div class="project-name">New Testament</div>
+          <div class="project-desc">Сайт для футуристической коллекции одежды Alien 2025 — авангардная эстетика и нестандартная подача.</div>
+          <div class="project-links">
+            <a href="https://www.behance.net/gallery/217938825/presentation-website-collection-of-futuristic-clothes" target="_blank" class="project-link behance">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.902 2.111 1.902.914 0 1.419-.468 1.644-1.073zM16.098 13h4.214c-.088-1.174-.56-1.99-1.967-1.99-1.3 0-2.04.814-2.247 1.99z"/></svg>
+              Behance
+            </a>
+            <a href="#" target="_blank" class="project-link site">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Live site
+            </a>
+          </div>
+        </div>
+        <div class="project-card-tags">
+          <span class="project-card-tag">Web Design</span>
+          <span class="project-card-tag">Art Direction</span>
+        </div>
+      </div>
+
+      <!-- Project 5 – Unlocker -->
+      <div class="project-card reveal" data-tags="UI / UX,Figma">
+        <img class="project-img" src="p5.png" alt="Unlocker">
+        <span class="project-tag">UI / UX</span>
+        <div class="project-overlay">
+          <div class="project-name">Unlocker</div>
+          <div class="project-desc">Приложение для управления электронным замком входной двери — минималистичный тёмный интерфейс.</div>
+          <div class="project-links">
+            <a href="https://www.behance.net/gallery/208878271/smart-door-lock-applications" target="_blank" class="project-link behance">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.902 2.111 1.902.914 0 1.419-.468 1.644-1.073zM16.098 13h4.214c-.088-1.174-.56-1.99-1.967-1.99-1.3 0-2.04.814-2.247 1.99z"/></svg>
+              Behance
+            </a>
+            <a href="#" target="_blank" class="project-link site">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Live site
+            </a>
+          </div>
+        </div>
+        <div class="project-card-tags">
+          <span class="project-card-tag">UI / UX</span>
+          <span class="project-card-tag">Figma</span>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div style="text-align:center;margin-top:56px;">
+      <a href="https://www.behance.net/kovalevdan32ee" target="_blank" class="more-projects-btn" data-i18n="more-btn">Больше проектов →</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="reveal">
+      <div class="section-label" data-i18n="contact-label">Связаться</div>
+      <h2 class="contact-title" data-i18n="contact-title">Давай<br>работать<br><span>вместе</span></h2>
+    </div>
+    <div class="contact-right reveal">
+      <p data-i18n="contact-desc">Есть проект или вакансия? Открыт к фрилансу, коллаборациям и интересным предложениям.</p>
+      <div class="contact-links">
+        <a href="mailto:kovalevdanil29@gmail.com" class="contact-link">
+          <div>
+            <div class="contact-link-name">Email</div>
+            <div class="contact-link-handle">kovalevdanil29@gmail.com</div>
+          </div>
+          <div class="contact-link-arrow">↗</div>
+        </a>
+        <a href="https://www.behance.net/kovalevdan32ee" target="_blank" class="contact-link">
+          <div>
+            <div class="contact-link-name">Behance</div>
+            <div class="contact-link-handle">kovalevdan32ee</div>
+          </div>
+          <div class="contact-link-arrow">↗</div>
+        </a>
+        <a href="https://novosibirsk.hh.ru/resume/c08ab4aeff1022b9320039ed1f627374316d4d" target="_blank" class="contact-link">
+          <div>
+            <div class="contact-link-name">HeadHunter</div>
+            <div class="contact-link-handle">hh.ru</div>
+          </div>
+          <div class="contact-link-arrow">↗</div>
+        </a>        
+        <a href="https://t.me/kevol14" target="_blank" class="contact-link">
+          <div>
+            <div class="contact-link-name">Telegram</div>
+            <div class="contact-link-handle">@kevol14</div>
+          </div>
+          <div class="contact-link-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 Kovalev Danila</span>
+    <span data-i18n="footer-built">Спроектировано и собрано с нуля</span>
+  </footer>
+
+
+  <script>
+    // ── Custom cursor ──────────────────────────────────────────────────────────
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .project-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+
+    // ── Wave dot field ─────────────────────────────────────────────────────────
+    (function() {
+      const canvas = document.getElementById('hero-canvas');
+      const ctx    = canvas.getContext('2d');
+      let W, H, t = 0;
+      let mouse = { x: -9999, y: -9999 };
+
+      const SPACING        = 34;
+      const WAVE_AMP       = 15;
+      const WAVE_SPD       = 0.005;
+      const RIPPLE_RADIUS  = 320;
+      const RIPPLE_STRENGTH = 15;
+
+      let cols, rows, dots = [];
+
+      function resize() {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+        buildDots();
+      }
+
+      function buildDots() {
+        dots = [];
+        cols = Math.ceil(W / SPACING) + 2;
+        rows = Math.ceil(H / SPACING) + 2;
+        const offX = (W - (cols - 1) * SPACING) / 2;
+        const offY = (H - (rows - 1) * SPACING) / 2;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            dots.push({
+              bx: offX + c * SPACING,
+              by: offY + r * SPACING,
+              phase: (c + r) * 0.38,
+            });
+          }
+        }
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      const heroEl = document.getElementById('hero');
+      heroEl.addEventListener('mousemove', e => {
+        const r = heroEl.getBoundingClientRect();
+        mouse.x = e.clientX - r.left;
+        mouse.y = e.clientY - r.top;
+      });
+      heroEl.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        t += 1;
+
+        dots.forEach(d => {
+          const wave = Math.sin(d.phase - t * WAVE_SPD) * WAVE_AMP;
+
+          let x = d.bx;
+          let y = d.by + wave;
+
+          const dx = x - mouse.x;
+          const dy = y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          let ripple = 0;
+          if (dist < RIPPLE_RADIUS && dist > 0) {
+            const force = (1 - dist / RIPPLE_RADIUS);
+            ripple = force * force * RIPPLE_STRENGTH;
+            x += (dx / dist) * ripple * 0.6;
+            y += (dy / dist) * ripple;
+          }
+
+          const normWave = (wave / WAVE_AMP + 1) / 2;
+          const r = 1.2 + normWave * 1.4 + ripple * 0.04;
+          const alpha = 0.2 + normWave * 0.01;
+
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(256,256,256,${alpha})`;
+          ctx.fill();
+        });
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+
+    // ── Filter logic ───────────────────────────────────────────────────────────
+    const filterBtns  = document.querySelectorAll('.filter-btn');
+    const filterReset = document.getElementById('filterReset');
+    const cards       = document.querySelectorAll('#projectGrid .project-card');
+
+    // Also make card tags clickable for filtering
+    document.querySelectorAll('.project-card-tag').forEach(tag => {
+      tag.addEventListener('click', e => {
+        e.stopPropagation();
+        applyFilter(tag.textContent.trim());
+      });
+    });
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+    });
+
+    filterReset.addEventListener('click', () => applyFilter('all'));
+
+    function applyFilter(value) {
+      // Update active button
+      filterBtns.forEach(b => b.classList.toggle('active', b.dataset.filter === value));
+
+      // Show/hide cards
+      cards.forEach(card => {
+        const tags = card.dataset.tags ? card.dataset.tags.split(',') : [];
+        const show = value === 'all' || tags.includes(value);
+        card.classList.toggle('hidden', !show);
+      });
+
+      // Show reset button when filter is active
+      filterReset.classList.toggle('visible', value !== 'all');
+    }
+
+    // ── Scroll reveal ──────────────────────────────────────────────────────────
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = (i % 3) * 0.1 + 's';
+      observer.observe(el);
+    });
+
+    // ── Language toggle ────────────────────────────────────────────────────────
+    const translations = {
+      ru: {
+        'nav-about':        'Обо мне',
+        'nav-work':         'Работы',
+        'nav-contact':      'Контакты',
+        'hero-label':       'Портфолио 2024',
+        'hero-status':      'Открыт к проектам',
+        'hero-desc':        'Креативный дизайнер, специализируюсь на визуальной коммуникации и брендинге. Создаю цельные визуальные системы — от айдентики и рекламных материалов до дизайна мерча. За плечами более 10 реализованных проектов в разных сферах; ценю ясность, смысл и выразительность в каждом решении.',
+        'about-label':      'Обо мне',
+        'about-title':      'Дизайн,<br>который<br>говорит<br>сам за себя.',
+        'about-p1':         'Я дизайнер, который создаёт чёткие, смелые и запоминающиеся визуальные решения. Верю, что хороший дизайн незаметен — он просто работает, ощущается правильным и оставляет след.',
+        'about-p2':         'От концепции до финального пикселя я подхожу к каждому проекту с любопытством и вниманием к деталям. Будь то айдентика, UI или печать — я здесь для этого.',
+        'portfolio-label':  'Избранные работы',
+        'portfolio-title':  'Проекты',
+        'filter-all':       'Все',
+        'filter-reset':     '✕ Сброс',
+        'contact-label':    'Связаться',
+        'contact-title':    'Давай<br>работать<br><span>вместе</span>',
+        'contact-desc':     'Есть проект или вакансия? Открыт к фрилансу, коллаборациям и интересным предложениям.',
+        'footer-built':     'Спроектировано и собрано с нуля',
+        'more-btn':         'Больше проектов →',
+      },
+      en: {
+        'nav-about':        'About',
+        'nav-work':         'Work',
+        'nav-contact':      'Contact',
+        'hero-label':       'Portfolio 2024',
+        'hero-status':      'Available for projects',
+        'hero-desc':        '"I am a creative designer specializing in visual communication and branding. I create complete visual systems, from identity and advertising materials to merch design. I have completed more than 10 projects in various fields; I appreciate the clarity, meaning and expressiveness in each decision.',
+        'about-label':      'About me',
+        'about-title':      'Design that<br>speaks<br>without<br>words.',
+        'about-p1':         "I'm a designer passionate about creating clear, bold, and memorable visual experiences. I believe great design is invisible — it just works, feels right, and leaves an impression.",
+        'about-p2':         "From concept to final pixel, I approach every project with curiosity and attention to detail. Whether it's a brand identity, UI, or a print piece — I'm here for it.",
+        'portfolio-label':  'Selected work',
+        'portfolio-title':  'Projects',
+        'filter-all':       'All',
+        'filter-reset':     '✕ Reset',
+        'contact-label':    'Get in touch',
+        'contact-title':    "Let's<br>work<br><span>together</span>",
+        'contact-desc':     "Have a project in mind? I'm open to freelance work, collaborations, and exciting opportunities.",
+        'footer-built':     'Designed & built from scratch',
+        'more-btn':         'More projects →',
+      }
+    };
+
+    let currentLang = 'ru';
+    const langBtn = document.getElementById('langBtn');
+
+    function applyLang(lang) {
+      const t = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+      langBtn.textContent = lang === 'ru' ? 'EN' : 'RU';
+      document.documentElement.lang = lang;
+      currentLang = lang;
+    }
+
+    langBtn.addEventListener('click', () => {
+      applyLang(currentLang === 'ru' ? 'en' : 'ru');
+    });
+
+    // Init with Russian
+    applyLang('ru');
+  </script>
+</body>
+</html>
